@@ -12,8 +12,8 @@ python -m http.server 8080
 
 Then visit http://localhost:8080
 
-## Screenshots
+## Images
 
-One folder per project. `1.jpg` is the card thumbnail; `2.jpg` and up show in the details gallery.
+Save your portrait as `assets/images/portrait.jpg` (a square photo works best). It shows in the circle at the top. Until that file exists, the circle shows the initials RM.
 
-See `assets/images/projects/README.md`.
+Projects are text. The thesis card is the exception: two figures in `assets/images/projects/lung-ensemble/` (`1.png` and `5.png`).

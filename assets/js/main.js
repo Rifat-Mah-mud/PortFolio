@@ -1,6 +1,7 @@
 const projects = [
   {
     id: "techsupport-pro",
+    priority: 2,
     title: "TechSupport Pro",
     category: ["ai", "web"],
     summary: "Enterprise IT help desk with role-based portals, live chat, and an AI troubleshooting assistant.",
@@ -15,6 +16,7 @@ const projects = [
   },
   {
     id: "radiant-pharma",
+    priority: 3,
     title: "Radiant Nutraceuticals Pharma Assistant",
     category: ["ai"],
     summary: "Bilingual English/Bangla chatbot covering 33 herbal products, with an admin pipeline for document updates.",
@@ -29,6 +31,7 @@ const projects = [
   },
   {
     id: "ynotes",
+    priority: 4,
     title: "YNotes — Academic Notes Marketplace",
     category: ["web"],
     summary: "Full-stack EdTech marketplace for students, creators, and admins in Bangladesh.",
@@ -57,6 +60,7 @@ const projects = [
   },
   {
     id: "lung-ensemble",
+    priority: 1,
     title: "Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions from Lung-Segmented Chest X-rays",
     category: ["ai"],
     summary: "ULAB CSE thesis: a five-class chest X-ray system that segments the lungs, classifies the crop, and explains the decision only on lung tissue.",
@@ -85,16 +89,17 @@ const projects = [
       }
     ],
     note: "Research prototype, not a certified medical device.",
-    captions: [
-      "Held-out confusion matrix as a percent of each true class. Tuberculosis recall is 84.2%, and most remaining errors are with normal.",
-      "Overall held-out scores: 89.2% accuracy and 0.917 macro-F1.",
-      "Precision, recall, and F1 for bacterial pneumonia, COVID-19, normal, tuberculosis, and viral pneumonia.",
-      "One-versus-rest ROC curves. Bacterial pneumonia, COVID-19, and viral pneumonia reach an AUC of 0.999.",
-      "Correct COVID-19 case: original film, then Grad-CAM++, LIME, and SHAP inside the lung mask.",
-      "Correct tuberculosis case with the same three explanations.",
-      "Correct bacterial pneumonia case.",
-      "Correct viral pneumonia case.",
-      "A normal film predicted as tuberculosis. That pair is where most remaining errors sit."
+    figures: [
+      {
+        src: "assets/images/projects/lung-ensemble/1.png",
+        alt: "Confusion matrix for five lung classes, shown as a percent of each true class.",
+        caption: "Held-out confusion matrix as a percent of each true class. Tuberculosis recall is 84.2%, and most remaining errors are with normal."
+      },
+      {
+        src: "assets/images/projects/lung-ensemble/5.png",
+        alt: "Correct COVID-19 chest X-ray with Grad-CAM++, LIME, and SHAP limited to the lung mask.",
+        caption: "Correct COVID-19 case: original film, then Grad-CAM++, LIME, and SHAP inside the lung mask."
+      }
     ],
     stack: "Python, PyTorch, OpenCV, PSPNet, CLAHE, Grad-CAM++, LIME, SHAP, Flask",
     source: "thesis"
@@ -195,6 +200,7 @@ const projects = [
   },
   {
     id: "khorocboi",
+    priority: 6,
     title: "KhorocBoi",
     category: ["mobile", "ai"],
     summary: "Personal expense tracker that parses Bangla, English, and Banglish notes into amounts.",
@@ -263,6 +269,7 @@ const projects = [
   },
   {
     id: "easy-prescription",
+    priority: 5,
     title: "Easy Prescription",
     category: ["web", "mobile", "ai"],
     summary: "Scan a handwritten prescription, match the medicines, then save, speak, or download it as a PDF.",
@@ -304,173 +311,59 @@ const projects = [
   }
 ];
 
-const EXTS = ["jpg", "jpeg", "png", "webp"];
-const MAX_SHOTS = 12;
-let galleryUrls = [];
-let galleryCaptions = [];
-let galleryIndex = 0;
-let galleryTitle = "";
-
-function probe(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(img.naturalWidth > 0 ? url : null);
-    img.onerror = () => resolve(null);
-    img.src = url;
-  });
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
-function shotNames(n) {
-  return [...new Set([String(n), String(n).padStart(2, "0")])];
-}
+function renderProject(project) {
+  const featured = Number.isFinite(project.priority);
+  const highlights = featured
+    ? `<ul class="project-points">${project.highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+    : "";
+  const note = project.note ? `<p class="project-note">${escapeHtml(project.note)}</p>` : "";
+  const figures = (project.figures || [])
+    .map((figure) => `
+      <figure class="proof">
+        <img src="${escapeHtml(figure.src)}" alt="${escapeHtml(figure.alt)}">
+        <figcaption>${escapeHtml(figure.caption)}</figcaption>
+      </figure>
+    `)
+    .join("");
+  const writeup = (project.sections || [])
+    .map((section) => `<h4>${escapeHtml(section.heading)}</h4><p>${escapeHtml(section.text)}</p>`)
+    .join("");
+  const details = writeup
+    ? `<details class="project-writeup"><summary>Full write-up</summary>${writeup}</details>`
+    : "";
+  const link = project.link
+    ? `<p class="project-link"><a href="${escapeHtml(project.link)}" target="_blank" rel="noreferrer">${escapeHtml(project.link.replace(/^https?:\/\//, ""))}</a></p>`
+    : "";
 
-async function findShot(id, n) {
-  for (const name of shotNames(n)) {
-    for (const ext of EXTS) {
-      const hit = await probe(`assets/images/projects/${id}/${name}.${ext}`);
-      if (hit) return hit;
-    }
-  }
-  return null;
-}
-
-async function loadGallery(id) {
-  const urls = [];
-  for (let n = 1; n <= MAX_SHOTS; n++) {
-    const found = await findShot(id, n);
-    if (found) urls.push(found);
-    else if (n >= 4) break;
-  }
-  return urls;
-}
-
-function bindThumb(frame, img, id) {
-  frame.classList.add("is-empty");
-  findShot(id, 1).then((url) => {
-    if (!url) return;
-    img.onload = () => frame.classList.remove("is-empty");
-    img.src = url;
-  });
+  return `
+    <article class="project-card${featured ? " is-featured" : ""}">
+      <h3>${escapeHtml(project.title)}</h3>
+      <p class="project-summary">${escapeHtml(project.summary)}</p>
+      ${highlights}
+      ${note}
+      ${figures ? `<div class="proof-grid">${figures}</div>` : ""}
+      ${details}
+      <p class="project-stack">${escapeHtml(project.stack)}</p>
+      ${link}
+    </article>
+  `;
 }
 
 function renderProjects(filter) {
-  const grid = document.getElementById("project-grid");
-  grid.innerHTML = "";
-  projects
-    .filter((p) => filter === "all" || p.category.includes(filter))
-    .forEach((p) => {
-      const card = document.createElement("button");
-      card.className = "project-card";
-      card.type = "button";
-      card.dataset.id = p.id;
-      card.innerHTML = `
-        <div class="shot-frame is-empty" data-shot>
-          <img alt="${p.title} thumbnail" />
-          <div class="shot-placeholder">
-            <strong>Add thumbnail</strong>
-            <span>${p.id}/1.jpg</span>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3>${p.title}</h3>
-          <p>${p.summary}</p>
-          <div class="tags">${p.category.map((c) => `<span class="tag">${c}</span>`).join("")}</div>
-        </div>
-      `;
-      const frame = card.querySelector("[data-shot]");
-      bindThumb(frame, frame.querySelector("img"), p.id);
-      card.addEventListener("click", () => openModal(p.id));
-      grid.appendChild(card);
-    });
-}
-
-function showGallerySlide(i) {
-  if (!galleryUrls.length) return;
-  galleryIndex = (i + galleryUrls.length) % galleryUrls.length;
-  const img = document.getElementById("gallery-image");
-  img.src = galleryUrls[galleryIndex];
-  img.alt = `${galleryTitle} screenshot ${galleryIndex + 1}`;
-  document.getElementById("gallery-count").textContent = `${galleryIndex + 1} / ${galleryUrls.length}`;
-  const caption = document.getElementById("gallery-caption");
-  const captionText = galleryCaptions[galleryIndex] || "";
-  caption.textContent = captionText;
-  caption.hidden = !captionText;
-  document.querySelectorAll("#gallery-thumbs button").forEach((btn, idx) => {
-    btn.classList.toggle("is-active", idx === galleryIndex);
-  });
-}
-
-function renderThumbs() {
-  const row = document.getElementById("gallery-thumbs");
-  row.innerHTML = "";
-  const hasShots = galleryUrls.length > 0;
-  const many = galleryUrls.length > 1;
-  row.hidden = !hasShots;
-  document.getElementById("gallery-prev").hidden = !many;
-  document.getElementById("gallery-next").hidden = !many;
-  document.getElementById("gallery-count").hidden = !hasShots;
-  if (!hasShots) return;
-  galleryUrls.forEach((url, idx) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = idx === galleryIndex ? "is-active" : "";
-    btn.innerHTML = `<img src="${url}" alt="Screenshot ${idx + 1}">`;
-    btn.addEventListener("click", () => showGallerySlide(idx));
-    row.appendChild(btn);
-  });
-}
-
-async function openModal(id) {
-  const p = projects.find((x) => x.id === id);
-  const modal = document.getElementById("project-modal");
-  const main = document.getElementById("gallery-main");
-  const empty = document.getElementById("gallery-empty");
-  galleryTitle = p.title;
-  galleryCaptions = p.captions || [];
-  galleryUrls = await loadGallery(id);
-  galleryIndex = 0;
-  document.getElementById("modal-title").textContent = p.title;
-  document.getElementById("modal-summary").textContent = p.summary;
-  const note = document.getElementById("modal-note");
-  note.textContent = p.note || "";
-  note.hidden = !p.note;
-  document.getElementById("modal-list").innerHTML = p.highlights.map((h) => `<li>${h}</li>`).join("");
-  document.getElementById("modal-sections").innerHTML = (p.sections || [])
-    .map((section) => `<h4>${section.heading}</h4><p>${section.text}</p>`)
-    .join("");
-  document.getElementById("modal-stack").textContent = p.stack;
-  const link = document.getElementById("modal-link");
-  if (p.link) {
-    link.hidden = false;
-    link.href = p.link;
-    link.textContent = p.link.replace(/^https?:\/\//, "");
-  } else {
-    link.hidden = true;
-  }
-  if (galleryUrls.length) {
-    main.classList.remove("is-empty");
-    empty.textContent = "";
-    renderThumbs();
-    showGallerySlide(0);
-  } else {
-    main.classList.add("is-empty");
-    const shotList = galleryCaptions.length
-      ? `\n\n${galleryCaptions.map((captionText, index) => `${index + 1}. ${captionText}`).join("\n")}`
-      : "";
-    empty.textContent = `Add images in assets/images/projects/${id}/ as 1.jpg, 2.jpg, 3.jpg…${shotList}`;
-    renderThumbs();
-    document.getElementById("gallery-caption").hidden = true;
-    document.getElementById("gallery-image").removeAttribute("src");
-  }
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
-  document.getElementById("close-modal").focus();
-}
-
-function closeModal() {
-  const modal = document.getElementById("project-modal");
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
+  const list = document.getElementById("project-list");
+  const visible = projects
+    .map((project, index) => ({ project, index }))
+    .filter(({ project }) => filter === "all" || project.category.includes(filter))
+    .sort((a, b) => (a.project.priority ?? 50) - (b.project.priority ?? 50) || a.index - b.index);
+  list.innerHTML = visible.map(({ project }) => renderProject(project)).join("");
 }
 
 document.querySelectorAll(".filter-btn").forEach((btn) => {
@@ -479,25 +372,6 @@ document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.add("is-active");
     renderProjects(btn.dataset.filter);
   });
-});
-
-document.getElementById("close-modal").addEventListener("click", closeModal);
-document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
-document.getElementById("gallery-prev").addEventListener("click", () => showGallerySlide(galleryIndex - 1));
-document.getElementById("gallery-next").addEventListener("click", () => showGallerySlide(galleryIndex + 1));
-document.addEventListener("keydown", (e) => {
-  if (!document.getElementById("project-modal").classList.contains("is-open")) return;
-  if (e.key === "Escape") closeModal();
-  if (e.key === "ArrowLeft") showGallerySlide(galleryIndex - 1);
-  if (e.key === "ArrowRight") showGallerySlide(galleryIndex + 1);
-});
-
-document.getElementById("menu-btn").addEventListener("click", () => {
-  document.getElementById("nav-links").classList.toggle("is-open");
-});
-
-document.querySelectorAll("#nav-links a").forEach((a) => {
-  a.addEventListener("click", () => document.getElementById("nav-links").classList.remove("is-open"));
 });
 
 renderProjects("all");
