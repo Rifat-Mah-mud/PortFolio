@@ -25,7 +25,7 @@ assets/images/projects/
 | `radiant-pharma/` | Radiant Nutraceuticals Pharma Assistant |
 | `ynotes/` | YNotes |
 | `brand-lifecycle/` | Brand Lifecycle Task Manager |
-| `lung-ensemble/` | Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions (capstone) |
+| `lung-ensemble/` | Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions (ULAB thesis) |
 | `lung-xray/` | Explainable Lung Diagnosis (DenseNet201, single model) |
 | `fifa-2026/` | FIFA World Cup Prediction App |
 | `novara/` | Novara |
@@ -37,13 +37,21 @@ assets/images/projects/
 | `knowledge-hub/` | Knowledge HUB |
 | `pill-reminder/` | Pill Reminder |
 | `tic-tac-toi/` | Tic Tac Toi |
+| `bonova-calcium-quest/` | Bonova Calcium Quest |
+| `easy-prescription/` | Easy Prescription |
+| `comic-to-video/` | Comic-to-Video |
+| `ubi-q-photo-frame/` | Ubi-Q Photo Frame |
 
 Recommended size: **1600 × 1000**. Keep passwords and private data out of the frame.
 
 ### `lung-ensemble/` captions
 
-1. Flask upload screen.
-2. Predicted label and class probabilities.
-3. Grad-CAM++, LIME, and SHAP inside the lung mask.
-4. Rejected upload that is not a usable chest X-ray.
-5. One results figure, such as the confusion matrix or the hybrid-versus-single-model comparison.
+1. Held-out confusion matrix as a percent of each true class.
+2. Overall held-out scores.
+3. Precision, recall, and F1 for each class.
+4. One-versus-rest ROC curves.
+5. Correct COVID-19 case with Grad-CAM++, LIME, and SHAP.
+6. Correct tuberculosis case.
+7. Correct bacterial pneumonia case.
+8. Correct viral pneumonia case.
+9. Normal film predicted as tuberculosis.

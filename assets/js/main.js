@@ -59,7 +59,7 @@ const projects = [
     id: "lung-ensemble",
     title: "Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions from Lung-Segmented Chest X-rays",
     category: ["ai"],
-    summary: "ULAB CSE capstone: a five-class chest X-ray system that segments the lungs, classifies the crop, and explains the decision only on lung tissue.",
+    summary: "ULAB CSE thesis: a five-class chest X-ray system that segments the lungs, classifies the crop, and explains the decision only on lung tissue.",
     highlights: [
       "Segments both lungs, crops the film, and refuses a label when the upload fails the lung check.",
       "Fine-tunes DenseNet201, ResNet50, VGG16, and EfficientNet-B3 on 35,686 lung-cropped images with one two-phase schedule.",
@@ -86,11 +86,15 @@ const projects = [
     ],
     note: "Research prototype, not a certified medical device.",
     captions: [
-      "Flask upload screen.",
-      "Predicted label and class probabilities.",
-      "Grad-CAM++, LIME, and SHAP inside the lung mask.",
-      "Rejected upload that is not a usable chest X-ray.",
-      "One results figure, such as the confusion matrix or the hybrid-versus-single-model comparison."
+      "Held-out confusion matrix as a percent of each true class. Tuberculosis recall is 84.2%, and most remaining errors are with normal.",
+      "Overall held-out scores: 89.2% accuracy and 0.917 macro-F1.",
+      "Precision, recall, and F1 for bacterial pneumonia, COVID-19, normal, tuberculosis, and viral pneumonia.",
+      "One-versus-rest ROC curves. Bacterial pneumonia, COVID-19, and viral pneumonia reach an AUC of 0.999.",
+      "Correct COVID-19 case: original film, then Grad-CAM++, LIME, and SHAP inside the lung mask.",
+      "Correct tuberculosis case with the same three explanations.",
+      "Correct bacterial pneumonia case.",
+      "Correct viral pneumonia case.",
+      "A normal film predicted as tuberculosis. That pair is where most remaining errors sit."
     ],
     stack: "Python, PyTorch, OpenCV, PSPNet, CLAHE, Grad-CAM++, LIME, SHAP, Flask",
     source: "thesis"
@@ -242,6 +246,61 @@ const projects = [
     ],
     stack: "Flutter, Dart, Riverpod, Hive, GoRouter",
     source: "Tic_Tac_Toi"
+  },
+  {
+    id: "bonova-calcium-quest",
+    title: "Bonova Calcium Quest",
+    category: ["web", "games"],
+    summary: "Doctor-facing calcium game: feed a growing skeleton, avoid junk food, and track scores across five levels.",
+    highlights: [
+      "Five levels with a 1,200-point bone bar. Calcium foods score less as the quest goes on; junk always costs 50.",
+      "Skeleton age runs from 2 to 59 across the quest, with resume, best score, and awards.",
+      "Doctor accounts (signup, login, password reset) and an admin area for doctors, sessions, and reports.",
+      "CSV export of sessions, doctors, and the roster."
+    ],
+    stack: "Next.js, TypeScript, React, Prisma, MySQL, Zod, Argon2",
+    source: "benova game webapp"
+  },
+  {
+    id: "easy-prescription",
+    title: "Easy Prescription",
+    category: ["web", "mobile", "ai"],
+    summary: "Scan a handwritten prescription, match the medicines, then save, speak, or download it as a PDF.",
+    highlights: [
+      "Photo or upload goes through OCR.space (handwriting engine, with a fallback engine).",
+      "Brand names are matched to a medicine catalog with Levenshtein distance and Soundex, plus a manual pick when the guess is weak.",
+      "English and Bangla screens, OTP login, history, PDF download, and ElevenLabs speech of the confirmed medicines.",
+      "Same flow on the web (React) and in the Flutter app. Admin panel for users, medicines, and generics."
+    ],
+    stack: "React, TypeScript, Vite, Tailwind, Express, MySQL, Flutter, OCR.space, ElevenLabs",
+    source: "easy Prescription"
+  },
+  {
+    id: "comic-to-video",
+    title: "Comic-to-Video",
+    category: ["ai", "web"],
+    summary: "Turns a comic panel and its dialogue into a narrated 1080p clip without redrawing the artwork.",
+    highlights: [
+      "Original panel pixels stay as-is. Motion is a camera move (zoom and pan) over the uploaded art.",
+      "Dialogue becomes speaker-aware narration, then local Piper speech, then an MP4 via FFmpeg.",
+      "Next.js frontend and FastAPI backend, with SQLite for projects, chapters, and pages.",
+      "Working proof of concept (one panel plus manual dialogue). The same TTS and render path is what later chapters will reuse."
+    ],
+    stack: "Next.js, TypeScript, Python, FastAPI, SQLite, Piper, FFmpeg",
+    source: "pdf to video"
+  },
+  {
+    id: "ubi-q-photo-frame",
+    title: "Ubi-Q Photo Frame",
+    category: ["web"],
+    summary: "Doctors pick a frame, place a photo, and download a finished card. Admins see who used which frame.",
+    highlights: [
+      "Frame gallery, then a card editor that composites the photo into the frame and downloads a PNG.",
+      "Doctor login. Each generated card is stored with the doctor and the frame.",
+      "Admin dashboard of frame usage by doctor, with an Excel export."
+    ],
+    stack: "Next.js, TypeScript, Prisma, MySQL, JWT, Tailwind, ExcelJS",
+    source: "Ubi-Q Photo Frame"
   }
 ];
 
