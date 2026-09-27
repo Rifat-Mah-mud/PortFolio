@@ -14,7 +14,7 @@ Then visit http://localhost:8080
 
 ## CV
 
-Put the current CV at `assets/cv/Rifat-Mahmud-CV.pdf`. The CV button downloads that file. When the CV changes, replace this same file. Do not rename it.
+Put the current CV at `cv/Rifat_CV_Main.pdf`. The CV button downloads that file. When the CV changes, replace this same file. Do not rename it.
 
 ## Images
 
