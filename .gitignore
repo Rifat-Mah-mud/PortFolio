@@ -1,0 +1,32 @@
+# Local install for the screenshot capture script. GitHub Pages does not need it.
+node_modules/
+
+# Scratch HTML written by scripts/capture-screens.mjs before it saves images.
+_ui-shots/
+
+# Playwright output, if the capture script is run with tracing or reports.
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
