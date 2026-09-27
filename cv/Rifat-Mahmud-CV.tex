@@ -1,0 +1,193 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx} % Times New Roman
+\usepackage[top=0.6in, bottom=0.6in, left=0.75in, right=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{array}
+
+\hypersetup{colorlinks=true, urlcolor=black, linkcolor=black}
+
+\titleformat{\section}{\bfseries\scshape}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{noitemsep, topsep=2pt, leftmargin=1.5em, label=$\circ$}
+
+\begin{document}
+
+%---------- HEADER ----------
+\begin{center}
+    {\LARGE \textbf{Md. Rifat Mahmud}} \\[5pt]
+    \footnotesize
+    Dhaka, Bangladesh~$|$~
+    \textbf{Ph:}~+880-1936796230~$|$~
+    \textbf{Email:}~rifat.mahmud.cse@ulab.edu.bd~$|$~
+    \raisebox{0pt}{\fbox{\textbf{in}}}~\href{https://www.linkedin.com/in/md-rifat-mahmud-446171341/}{LinkedIn}~$|$~
+    \href{https://rifat-mah-mud.github.io/PortFolio/}{Portfolio}
+\end{center}
+
+\vspace{2pt}
+
+%---------- PROFESSIONAL SUMMARY ----------
+\section{Professional Summary}
+\begin{itemize}
+    \item Computer Science graduate (ULAB, Summer 2026, CGPA 3.55/4.00) working full-time as a Junior AI Engineer at Impala Intech after a four-month AI internship on the same team.
+    \item Builds full-stack web products, Flutter apps, and practical AI tools across NLP, chatbots, and document processing. Strong in Python, TypeScript, and Java, with a foundation in OOP, data structures, and algorithms.
+\end{itemize}
+
+%---------- EDUCATION ----------
+\section{Education}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{University of Liberal Arts Bangladesh (ULAB)} & Dhaka, Bangladesh \\
+    \textit{Bachelor of Science in Computer Science and Engineering (CSE)} & June 2022 -- Summer 2026 \\
+\end{tabular*}
+\begin{itemize}
+    \item CGPA: 3.55 / 4.00 (completed)
+    \item Thesis: \textit{Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions from Lung-Segmented Chest X-Rays}. Supervisor: Prof.\ Muhammad Golam Kibria
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{GBG University and College} & Ghatail, Tangail \\
+    \textit{Higher Secondary Certificate (HSC)} & 2018 -- 2019 \\
+\end{tabular*}
+\begin{itemize}
+    \item GPA: 4.00 / 5.00
+\end{itemize}
+
+%---------- WORK EXPERIENCE ----------
+\section{Work Experience}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Impala Intech} & Dhaka, Bangladesh \\
+    \textit{Junior AI Engineer (permanent)} & June 2026 -- Present \\
+\end{tabular*}
+\begin{itemize}
+    \item Moved into a permanent seat after the internship and still in the role
+    \item Develop and deploy AI-powered product work full-time, continuing the NLP, chatbot, and document-processing line started as an intern
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Impala Intech} & Dhaka, Bangladesh \\
+    \textit{AI Engineer Intern} & February 2026 -- May 2026 \\
+\end{tabular*}
+\begin{itemize}
+    \item Four-month internship on NLP, chatbot development, and document processing
+    \item Completed the internship, then joined the same team as a permanent Junior AI Engineer
+\end{itemize}
+
+%---------- TECHNICAL SKILLS ----------
+\section{Technical Skills}
+\begin{itemize}
+    \item \textbf{Programming Languages:} Python, TypeScript, JavaScript, Java, PHP, C, Dart, SQL
+    \item \textbf{Frameworks \& Libraries:} Next.js, NestJS, React, Flutter, FastAPI, Flask, PyTorch, TensorFlow, Keras, LangChain, Prisma, OpenCV
+    \item \textbf{Databases \& Data:} PostgreSQL, MySQL, Redis, ChromaDB, SQL, OOP, Data Structures, Algorithms
+    \item \textbf{Tools:} Git, GitHub, Docker, LaTeX, Ollama, VS Code
+    \item \textbf{Soft Skills:} Time Management, Team Player, Adaptability, Leadership, Public Speaking, Critical Thinking, Communication, Conflict Resolution
+    \item \textbf{Languages:} Bangla (Proficient -- writing, speaking, and listening), English (Good listening and basic speaking)
+\end{itemize}
+
+%---------- PROJECTS ----------
+\section{Projects}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Explainable Hybrid Ensemble Diagnosis of Five Lung Conditions} & ULAB thesis, 2026 \\
+\end{tabular*}
+\begin{itemize}
+    \item Five-class chest X-ray system (bacterial pneumonia, viral pneumonia, COVID-19, tuberculosis, normal) that segments both lungs, crops the film, and refuses a label when the upload fails the lung check
+    \item Fine-tuned DenseNet201, ResNet50, VGG16, and EfficientNet-B3 on 35,686 lung-cropped images with one shared two-phase schedule
+    \item Soft-averages the four models for the pneumonia classes and COVID-19; normal versus tuberculosis uses EfficientNet-B3, a horizontal flip, and a 0.6 threshold
+    \item 89.23\% accuracy and 91.67\% macro-F1 on 7,651 held-out images. Grad-CAM++, LIME, and SHAP stay inside the lung mask. Research prototype
+    \item \textit{Tech Stack: Python, PyTorch, OpenCV, PSPNet, CLAHE, Grad-CAM++, LIME, SHAP, Flask}
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{TechSupport Pro --- Enterprise IT Help Desk \& AI Chatbot} & \\
+\end{tabular*}
+\begin{itemize}
+    \item Role-based portals (User, Helper, Admin) for the IT ticket lifecycle: create, assign, accept/reject, status tracking, and file attachments
+    \item Real-time chat and notifications with Socket.IO and Redis; background jobs with BullMQ
+    \item AI assistant (Ollama, Llama 3.1 8B) for troubleshooting and ticket creation from chat
+    \item NestJS REST API with JWT auth and RBAC; Next.js 14 frontend with Tailwind and Zustand
+    \item \textit{Tech Stack: TypeScript, NestJS, Next.js, Prisma, PostgreSQL, Redis, Socket.IO, BullMQ, Ollama}
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Radiant Nutraceuticals Pharma Assistant --- AI Chatbot} & \\
+\end{tabular*}
+\begin{itemize}
+    \item Bilingual English/Bangla chatbot for 33 herbal products, covering dosage, side effects, warnings, and interactions
+    \item English replies from a local LLM; Bangla replies from curated fields so product facts stay stable
+    \item Admin pipeline extracts PDF, PPTX, DOCX, and TXT to refresh the medicine database; RAG over the product catalog
+    \item \textit{Tech Stack: Python, FastAPI, Ollama, ChromaDB, RAG, sentence-transformers}
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{YNotes --- Academic Notes Marketplace} & \\
+\end{tabular*}
+\begin{itemize}
+    \item Full-stack EdTech marketplace with three roles (Student, Creator, Admin) on Next.js 14 and TypeScript
+    \item Normalized PostgreSQL schema and 71+ REST endpoints with Prisma and NextAuth v5
+    \item SSLCommerz wallet top-ups (bKash, Nagad, Rocket) with IPN callbacks
+    \item Secure PDF delivery via Cloudflare R2, 70/30 creator revenue share, analytics, and moderation
+    \item \textit{Tech Stack: Next.js 14, TypeScript, PostgreSQL, Prisma, NextAuth v5, Tailwind, Cloudflare R2, SSLCommerz, Redis}
+\end{itemize}
+
+\vspace{3pt}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Easy Prescription} & \\
+\end{tabular*}
+\begin{itemize}
+    \item Scans a handwritten prescription, matches the medicines, then saves, speaks, or downloads the result as a PDF
+    \item OCR.space handwriting engine with a fallback engine; brand names matched with Levenshtein distance and Soundex, plus a manual pick when the guess is weak
+    \item English and Bangla screens, OTP login, history, PDF download, and ElevenLabs speech. Same flow on the web and in a Flutter app
+    \item \textit{Tech Stack: React, TypeScript, Express, MySQL, Flutter, OCR.space, ElevenLabs}
+\end{itemize}
+
+\vspace{4pt}
+\noindent
+\textbf{Also:} FIFA World Cup Prediction App; Brand Lifecycle Task Manager; Novara (\href{https://novaraonline.xyz}{novaraonline.xyz}); plus mobile apps and smaller builds. Full write-ups: \href{https://rifat-mah-mud.github.io/PortFolio/}{portfolio}.
+
+%---------- CO-CURRICULAR ----------
+\section{Co-Curricular \& Extracurricular Activities}
+
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Participant --- UCPC Take-Off Programming Contest} & Fall 2023 \\
+\end{tabular*}
+\begin{itemize}
+    \item Competed in a university-wide competitive programming contest and solved 4 out of 5 problems
+\end{itemize}
+
+%---------- REFERENCES ----------
+\section{References}
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+    \textbf{Prof.\ Muhammad Golam Kibria, PhD, SMIEEE} & \\
+    Professor \& Head, Department of Computer Science and Engineering (CSE) & \\
+    University of Liberal Arts Bangladesh (ULAB) & \\
+    Email: golam.kibria@ulab.edu.bd & \\
+\end{tabular*}
+
+%---------- DECLARATION ----------
+\section{Declaration}
+I hereby declare that all the information provided in this CV is true and correct to the best of my knowledge.
+
+\vspace{10pt}
+\noindent
+Md. Rifat Mahmud
+
+\end{document}

@@ -111,11 +111,21 @@ a {
   color: var(--ink);
 }
 
+.nav-cta,
+.nav-cv {
+  padding: 9px 16px;
+  border-radius: 999px;
+}
+
 .nav-cta {
   background: var(--navy);
   color: #fff8ef !important;
-  padding: 9px 16px;
-  border-radius: 999px;
+}
+
+.nav-cv {
+  background: transparent;
+  color: var(--navy) !important;
+  border: 1px solid var(--navy);
 }
 
 .hero {
@@ -742,9 +752,11 @@ h2 {
     min-height: 32px;
   }
 
-  .nav-cta {
+  .nav-cta,
+  .nav-cv {
     background: transparent;
     color: var(--navy) !important;
+    border: 0;
     padding: 0;
     font-weight: 700;
   }
