@@ -6,7 +6,6 @@ _ui-shots/
 
 # Full thesis figure dump. The portfolio uses a few slides copied into assets/.
 thesis/
-scripts/
 
 # Playwright output, if the capture script is run with tracing or reports.
 test-results/
