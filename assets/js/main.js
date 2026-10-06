@@ -48,14 +48,16 @@ const projects = [
     id: "brand-lifecycle",
     title: "Brand Lifecycle Task Manager",
     category: ["web"],
-    summary: "Workflow platform for multi-stage brand and product development reviews.",
+    summary: "Role-based tool that tracks pharmaceutical brands through a 30-step development lifecycle with dependency-gated steps.",
     highlights: [
-      "JWT role-based access for Manager/Admin and Brand Manager.",
-      "PostgreSQL schema with brand-specific task templates generated per project.",
-      "Dashboards for progress, members, products, and task detail.",
-      "Express API and React UI served together on a single port."
+      "Creating a project copies 30 step templates into subtasks, with default durations from 2 to 180 days per step.",
+      "Workflow engine: a step starts only when the step it depends on is finished, and finishing one auto-starts the next eligible step.",
+      "Task status and completion counts are recalculated inside the same Prisma transaction; finishing key steps unlocks the forecast, MRP, brand name, and logo fields.",
+      "Three roles (manager, brand manager, team leader) with 7-day JWTs, an active-account check on every request, and pgcrypto bcrypt password hashing.",
+      "About 20 REST endpoints, including a transactional batch update capped at 30 subtasks, plus start/finish actions.",
+      "Styled Excel exports, in-browser logo compression, and 24 Vitest test files; Express API and React UI served together on one port."
     ],
-    stack: "React, TypeScript, Vite, Tailwind, Express, Prisma, PostgreSQL, JWT",
+    stack: "React 19, TypeScript, Vite, Tailwind, React Router, Express, Prisma, PostgreSQL, JWT, ExcelJS, Vitest",
     source: "Product_Development_Review_App"
   },
   {
@@ -136,40 +138,46 @@ const projects = [
     id: "novara",
     title: "Novara — E-Commerce Platform",
     category: ["web"],
-    summary: "Live multi-category store for real customers in Bangladesh.",
+    summary: "Multi-category online store built for customers in Bangladesh.",
     highlights: [
-      "Product listings, authentication, admin panel, and order management.",
-      "Deployed and used in production at novaraonline.xyz."
+      "Multi-category product listings for shoppers.",
+      "Customer authentication for accounts and orders.",
+      "Admin panel for products and order management.",
+      "Server-rendered PHP pages over a MySQL database."
     ],
     stack: "PHP, MySQL, HTML, CSS, JavaScript",
-    link: "https://novaraonline.xyz",
     source: "CV"
   },
   {
     id: "face-scan",
     title: "Face Scan",
     category: ["ai", "web"],
-    summary: "Live camera matching that identifies people against stored face and image embeddings.",
+    summary: "Camera kiosk that recognises a person's face in the browser and plays the video linked to them, with an admin panel for enrolment.",
     highlights: [
-      "Browser capture with MediaPipe face detection in Next.js.",
-      "FastAPI backend with InsightFace embeddings and CLIP image embeddings.",
-      "PostgreSQL vector search (HNSW cosine) plus match cooldown and rate limits.",
-      "Admin UI to add, edit, and manage reference identities."
+      "MediaPipe BlazeFace runs in the browser; once a face holds inside the guide box for 250 ms, it is cropped, downscaled to 400 px, and sent to the API.",
+      "InsightFace buffalo_l produces a 512-d embedding, and only when exactly one face is in the frame.",
+      "pgvector cosine search over an HNSW index, with a 0.55 similarity threshold for a match.",
+      "Enrolment photos without a clear face fall back to an OpenCLIP ViT-B-32 embedding so they can still be stored.",
+      "Load protection: one scan per IP every 2.5 s, at most 4 concurrent embedding jobs, and a 25 s replay cooldown per person.",
+      "Admin panel creates a person, photo embedding, and video in one transaction, behind a bcrypt login and a 7-day httpOnly cookie."
     ],
-    stack: "Next.js, TypeScript, MediaPipe, FastAPI, InsightFace, CLIP, PostgreSQL",
+    stack: "Next.js 15, React 19, TypeScript, MediaPipe, FastAPI, InsightFace, OpenCLIP, PyTorch, PostgreSQL + pgvector",
     source: "Face_Scan"
   },
   {
     id: "radiant-forms",
     title: "Radiant Forms",
     category: ["web"],
-    summary: "Admin-managed HR forms with shareable public links, like Google Forms for internal use.",
+    summary: "Admin-managed HR forms with expiring public share links, and PDF output that recreates the original paper forms.",
     highlights: [
-      "Four HR forms, each with one expiring share token.",
-      "Public fill pages, admin submissions list, PDF preview via Puppeteer, Excel export.",
-      "MySQL with JWT admin auth in a single Next.js app."
+      "Four HR forms (Candidate Information, Employment Record, Nominee, Family Information) driven by one config file for rendering, validation, and export.",
+      "Each form has a share link built from a random 32-byte token, valid for as many days as the admin chooses.",
+      "Hand-written MySQL schema with 17 tables, including child tables for repeating sections like education, jobs, dependents, and nominees.",
+      "Shared client/server validation, duplicate-candidate blocking (HTTP 409), and JPG/PNG photo uploads up to 2 MB.",
+      "Admin can view, edit, and delete submissions, preview them, download a Puppeteer PDF, or export Excel with one sheet per section.",
+      "JWT admin auth in a 12-hour httpOnly cookie, plus an admin-creation script and a deploy script for self-hosting."
     ],
-    stack: "Next.js, TypeScript, MySQL, JWT, Puppeteer, ExcelJS",
+    stack: "Next.js 14, React 18, TypeScript, MySQL (mysql2), JWT, bcrypt, Puppeteer, ExcelJS",
     source: "Form_Fill_Up"
   },
   {
@@ -178,11 +186,14 @@ const projects = [
     category: ["web", "games"],
     summary: "PCOS wellness game for the Chirocyst brand: slice harmful habits, with an admin content CMS.",
     highlights: [
-      "Playable Next.js game with levels and habit items stored in MySQL.",
-      "Admin dashboards to edit levels and habit content that update gameplay immediately.",
-      "JWT session auth and Zod-validated server actions."
+      "Canvas game with arcing items, swipe trails, slice animations, combos, and pause/resume on requestAnimationFrame.",
+      "Scoring of +10 per correct cut and −15 per wrong one, plus a hormone-balance meter that rewards cuts and punishes misses.",
+      "Three database-driven levels, each with its own goal score, duration, spawn rate, speed, and gravity.",
+      "Habits are tagged CUT or PROTECT, each with an emoji, a short science note, and a tip; players also get a leaderboard and an info page.",
+      "Admin dashboard with stats, level and habit editors that change gameplay immediately, user management, and Excel export of users.",
+      "JWT sessions in httpOnly cookies, bcrypt passwords, Zod-validated server actions, and Vitest tests."
     ],
-    stack: "Next.js 16, React 19, TypeScript, Tailwind, Prisma, MySQL",
+    stack: "Next.js 16, React 19, TypeScript, Tailwind, Prisma, MySQL, jose (JWT), Zod, Web Audio API, Vitest",
     source: "ChiroCyst_Game"
   },
   {
@@ -218,39 +229,48 @@ const projects = [
     id: "knowledge-hub",
     title: "Knowledge HUB",
     category: ["mobile"],
-    summary: "Field sales mobile app for quizzes, product resources, surveys, and leaderboards.",
+    summary: "Field-sales app for pharmaceutical reps with timed quizzes, leaderboards, surveys, and a monthly resource library.",
     highlights: [
-      "OTP login, home, quiz play, PDF/office resource preview, surveys, and profile.",
-      "Offline-friendly quiz submission queue and cached files.",
-      "Force-update flow for Android sideload releases."
+      "Mobile number and OTP login with a 120-second resend cooldown, secure session storage, and automatic token refresh.",
+      "Timed quizzes: 60 seconds per question, no going back, and a question is marked wrong if the app is backgrounded for over 10 seconds.",
+      "Failed quiz submissions are saved in Hive and retried by a WorkManager job with exponential backoff and jitter until they succeed.",
+      "Resource library organised by month, product, and category; PDFs open in-app with pdfrx and Office files in a WebView.",
+      "Leaderboard with month filters and trophies, surveys, and profile editing, built from Figma designs.",
+      "Self-update from GitHub Releases with download progress and a force-update screen; 10 test files across the feature modules."
     ],
-    stack: "Flutter, Dart, BLoC, Dio, Hive, GoRouter, pdfrx",
+    stack: "Flutter, Dart, BLoC, get_it, GoRouter, Dio, fpdart, Hive, WorkManager, pdfrx",
     source: "khuv last / KHub"
   },
   {
     id: "pill-reminder",
     title: "Pill Reminder",
     category: ["mobile"],
-    summary: "Medication reminder app with schedules, intake history, and reliable local alarms.",
+    summary: "Android medicine reminder whose alarms keep firing when the app is killed or offline, with dose history synced to a REST API.",
     highlights: [
-      "Add schedules, track today’s doses, history, and profile.",
-      "Local notifications plus native alarm scheduling and FCM.",
-      "Offline sync for schedules and intake when the network returns.",
-      "Clean architecture (domain / data / presentation) with Cubit/BLoC."
+      "Daily, every-X-days, weekly, monthly, and yearly schedules across morning, afternoon, evening, and night slots, with search over 36,085 medicines.",
+      "Doses are scheduled up to 30 days ahead, timezone-aware, through a native Kotlin AlarmManager layer with full-screen alarms, snooze, and a ringtone picker.",
+      "Alarms are rescheduled after reboot and re-checked by WorkManager every 12 hours; Firebase push acts as a backup channel.",
+      "Intake records and schedule changes are queued in SQLite while offline and uploaded when the connection returns.",
+      "JWT access/refresh tokens in secure storage, silent refresh on 401, and OTP password reset.",
+      "Clean architecture across five feature modules with Cubit/BLoC; screens include a calendar home, history, My Pills, and profile."
     ],
-    stack: "Flutter, Dart, Firebase Messaging, local notifications, Dio",
+    stack: "Flutter, Dart, Kotlin, Cubit/BLoC, get_it, Dio, sqflite, WorkManager, Firebase Messaging, local notifications",
     source: "Pill_Reminder"
   },
   {
     id: "tic-tac-toi",
     title: "Tic Tac Toi",
     category: ["mobile", "games"],
-    summary: "Polished offline Tic Tac Toe with a King AI opponent, sound, and local stats.",
+    summary: "Offline Tic Tac Toe with a minimax King AI, three difficulty levels, a coin toss, and local stats.",
     highlights: [
-      "Offline play with Hive persistence.",
-      "Riverpod state, GoRouter navigation, and game sound effects."
+      "Pure-Dart minimax engine with memoisation; the full game tree is precomputed at startup, so Hard-mode moves are instant lookups.",
+      "Hard never loses, Medium plays the perfect move 70% of the time, and Easy blocks an immediate loss half the time.",
+      "Animated coin toss decides who picks X or O; if the player picks O, the AI opens.",
+      "Seven screens on GoRouter with shared transitions; Riverpod handles vs-AI and vs-friend modes, theme, sound, and haptics.",
+      "Hive stores wins, losses, draws, and streaks per difficulty, plus settings.",
+      "Unit tests include 20 Hard-vs-Hard games that must all end in a draw."
     ],
-    stack: "Flutter, Dart, Riverpod, Hive, GoRouter",
+    stack: "Flutter, Dart, Riverpod, Hive, GoRouter, audioplayers, flutter_test",
     source: "Tic_Tac_Toi"
   },
   {
@@ -259,12 +279,14 @@ const projects = [
     category: ["web", "games"],
     summary: "Doctor-facing calcium game: feed a growing skeleton, avoid junk food, and track scores across five levels.",
     highlights: [
-      "Five levels with a 1,200-point bone bar. Calcium foods score less as the quest goes on; junk always costs 50.",
-      "Skeleton age runs from 2 to 59 across the quest, with resume, best score, and awards.",
-      "Doctor accounts (signup, login, password reset) and an admin area for doctors, sessions, and reports.",
-      "CSV export of sessions, doctors, and the roster."
+      "Five levels with a 1,200-point bone bar. Calcium foods score 50, 40, 30, 20, then 10 as the quest goes on; junk always costs 50.",
+      "Skeleton age runs from 2 to 59 across the quest, with resume, best score, awards, health tips, and a skeleton gallery.",
+      "Sessions send a heartbeat every 30 seconds and save checkpoints; the server rejects impossible scores before saving.",
+      "Argon2id passwords, hashed and revocable session tokens, a 15-minute lockout after 5 failed logins, and an audit log.",
+      "Security headers on every response (CSP, X-Frame-Options DENY, nosniff, strict referrer policy).",
+      "Admin area for doctors, sessions, and staff, with date-range CSV exports protected against spreadsheet formula injection."
     ],
-    stack: "Next.js, TypeScript, React, Prisma, MySQL, Zod, Argon2",
+    stack: "Next.js 16, React 19, TypeScript, Tailwind, Prisma, MySQL, Zod, Argon2, Vitest",
     source: "benova game webapp"
   },
   {
@@ -286,27 +308,32 @@ const projects = [
     id: "comic-to-video",
     title: "Comic-to-Video",
     category: ["ai", "web"],
-    summary: "Turns a comic panel and its dialogue into a narrated 1080p clip without redrawing the artwork.",
+    summary: "Turns an uploaded comic chapter into a narrated 1080p MP4 without redrawing the artwork.",
     highlights: [
-      "Original panel pixels stay as-is. Motion is a camera move (zoom and pan) over the uploaded art.",
-      "Dialogue becomes speaker-aware narration, then local Piper speech, then an MP4 via FFmpeg.",
-      "Next.js frontend and FastAPI backend, with SQLite for projects, chapters, and pages.",
-      "Working proof of concept (one panel plus manual dialogue). The same TTS and render path is what later chapters will reuse."
+      "Accepts a PDF, a ZIP, or a set of images up to 250 MB, streamed to disk; PDF pages are rendered at 180 DPI.",
+      "Three-tier OCR: Gemini vision first, then OCR.space, then local RapidOCR on normal and inverted tiles.",
+      "Tall webtoon pages are split into overlapping 1400 px tiles, with deduplication and a needs-review flag on doubtful lines.",
+      "OCR lines are classified (dialogue, scream, narration, SFX) and rewritten as speaker-aware narration the user can edit.",
+      "Background render: Piper speech, a 4 s FFmpeg zoom per page at 1920×1080 and 30 fps, then concat and AAC mux, with progress polling.",
+      "Next.js frontend and FastAPI backend with SQLite and Alembic. Proof of concept: panel detection is not built yet."
     ],
-    stack: "Next.js, TypeScript, Python, FastAPI, SQLite, Piper, FFmpeg",
+    stack: "Next.js 15, TypeScript, Python, FastAPI, SQLAlchemy, SQLite, Gemini, RapidOCR, Piper, FFmpeg",
     source: "pdf to video"
   },
   {
     id: "ubi-q-photo-frame",
     title: "Ubi-Q Photo Frame",
     category: ["web"],
-    summary: "Doctors pick a frame, place a photo, and download a finished card. Admins see who used which frame.",
+    summary: "Doctors place their photo in a branded Ubi-Q frame and download a high-resolution card. Admins track usage per frame.",
     highlights: [
-      "Frame gallery, then a card editor that composites the photo into the frame and downloads a PNG.",
-      "Doctor login. Each generated card is stored with the doctor and the frame.",
-      "Admin dashboard of frame usage by doctor, with an Excel export."
+      "Phone-number login that registers new doctors on first use, with bcrypt passwords and a 7-day httpOnly JWT cookie.",
+      "Card editor with 4 frames (square and circular), a 50–200% zoom slider, and arrow controls to position the photo.",
+      "Canvas compositing at 4× pixel ratio, with a flood-fill mask of the frame's centre so the photo never spills outside it.",
+      "Every download is stored as a generated card linked to the doctor and frame.",
+      "Admin dashboard of frame usage by doctor, with an Excel export.",
+      "Feature-based structure with 16 Vitest test files covering auth, sessions, image composition, and export."
     ],
-    stack: "Next.js, TypeScript, Prisma, MySQL, JWT, Tailwind, ExcelJS",
+    stack: "Next.js 16, React 19, TypeScript, Tailwind, shadcn/ui, Prisma, MySQL, JWT, Zod, ExcelJS, Vitest",
     source: "Ubi-Q Photo Frame"
   },
   {
@@ -336,7 +363,7 @@ function escapeHtml(value) {
 
 function renderProject(project) {
   const featured = Number.isFinite(project.priority);
-  const highlights = featured
+  const highlights = (project.highlights || []).length
     ? `<ul class="project-points">${project.highlights.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
     : "";
   const note = project.note ? `<p class="project-note">${escapeHtml(project.note)}</p>` : "";
