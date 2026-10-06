@@ -308,6 +308,21 @@ const projects = [
     ],
     stack: "Next.js, TypeScript, Prisma, MySQL, JWT, Tailwind, ExcelJS",
     source: "Ubi-Q Photo Frame"
+  },
+  {
+    id: "gavirad-mart",
+    priority: 7,
+    title: "Gavirad Mart",
+    category: ["mobile", "web"],
+    summary: "Points and rewards mobile app for field sales officers (MIOs). I built the backend and the admin panel.",
+    highlights: [
+      "Daily sales import turns boxes sold into points with monthly targets, bonus bands, and flash sale multipliers; MIOs redeem points for rewards.",
+      "Built for 10,000 MIOs active at once: ledger-backed balances, row locks, idempotent redeems, and background recalculation jobs.",
+      "OTP login over SMS with lockouts, rotating refresh tokens, live reward stock over WebSocket, and scheduled jobs in Bangladesh time.",
+      "Admin panel served by the backend: MIO and territory management, Excel uploads, rewards, redemptions, banners, trash, and an audit log."
+    ],
+    stack: "Node.js, Express 5, TypeScript, Prisma, MySQL, WebSocket, Next.js 16, React 19, Zod, clean architecture",
+    source: "Gavirad_Mart_Backend _&_Admin"
   }
 ];
 
